@@ -5,6 +5,8 @@ const WIDTH = 650
 const HEIGHT = 650
 
 const colors = [
+  '#B3D7D4',
+  '#7BB1AD',
   '#4F918C',
   '#2C7772',
   '#064B46',
@@ -15,17 +17,41 @@ function random(max) {
 }
 
 const Cell = props => {
-  const { x, y } = props
+  const { x, y, index } = props
+  let color
+
+  if (index < 10) color = colors[4]
+  if (index > 10 && index < 20) color = colors[3]
+  if (index > 20 && index < 30) color = colors[2]
+  if (index > 30 && index < 40) color = colors[1]
+  if (index > 40 && index < 50) color = colors[0]
+  if (index > 50 && index < 60) color = colors[4]
+  if (index > 60 && index < 70) color = colors[3]
+  if (index > 70 && index < 80) color = colors[2]
+  if (index > 80 && index < 90) color = colors[1]
+  if (index > 90 && index < 100) color = colors[0]
+  if (index > 100 && index < 110) color = colors[4]
+  if (index > 110 && index < 120) color = colors[3]
+  if (index > 120 && index < 130) color = colors[2]
+  if (index > 130 && index < 140) color = colors[1]
+  if (index > 140 && index < 150) color = colors[0]
+  if (index > 150 && index < 160) color = colors[4]
+  if (index > 160 && index < 170) color = colors[3]
+  if (index > 170 && index < 180) color = colors[2]
+  if (index > 180 && index < 190) color = colors[1]
+  if (index > 190 && index < 200) color = colors[0]
+  if (index > 200) color = colors[random(colors.length)]
+
 
   return (
     <div
       className='cell'
       style={{
-        left: `${CELL_SIZE * x + 1}px`,
-        top: `${CELL_SIZE * y + 1}px`,
-        width: `${CELL_SIZE - 1}px`,
-        height: `${CELL_SIZE - 1}px`,
-        backgroundColor: colors[random(colors.length)]
+        left: `${CELL_SIZE * x + random(7)}px`,
+        top: `${CELL_SIZE * y + random(7)}px`,
+        width: `${CELL_SIZE + random(7)}px`,
+        height: `${CELL_SIZE + random(7)}px`,
+        backgroundColor: color
       }}
     />
   )
@@ -33,19 +59,14 @@ const Cell = props => {
 
 const Controls = props => {
   const {
-    // interval,
     isRunning,
     runGame,
     stopGame,
-    // handleIntervalChange,
     handleRandom,
     handleClear
   } = props
   return (
     <div className='controls'>
-      {/*Update every <input*/}
-      {/*value={interval}*/}
-      {/*onChange={handleIntervalChange} /> ms*/}
       {isRunning
         ? <button className='button' onClick={stopGame}>
           Stop
@@ -64,7 +85,7 @@ class Game extends Component {
 
   state = {
     cells: [],
-    interval: 100,
+    interval: 80,
     isRunning: false
   }
 
@@ -197,12 +218,8 @@ class Game extends Component {
     }
   }
 
-  // handleIntervalChange = event => {
-  //   this.setState({ interval: event.target.value })
-  // }
-
   render () {
-    const { cells, /*interval,*/ isRunning } = this.state
+    const { cells, isRunning } = this.state
 
     return (
       <div>
@@ -215,20 +232,19 @@ class Game extends Component {
           onClick={this.handleClick}
           ref={n => { this.boardRef = n }}
         >
-          {cells.map(cell => (
+          {cells.map((cell, index) => (
             <Cell
               x={cell.x}
               y={cell.y}
               key={`${cell.x}, ${cell.y}`}
+              index={index}
             />
           ))}
         </div>
         <Controls
-          // interval={interval}
           isRunning={isRunning}
           runGame={this.runGame}
           stopGame={this.stopGame}
-          // handleIntervalChange={this.handleIntervalChange}
           handleRandom={this.handleRandom}
           handleClear={this.handleClear}
         />
