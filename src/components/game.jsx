@@ -47,10 +47,10 @@ const Cell = props => {
     <div
       className='cell'
       style={{
-        left: `${CELL_SIZE * x + random(7)}px`,
-        top: `${CELL_SIZE * y + random(7)}px`,
-        width: `${CELL_SIZE + random(7)}px`,
-        height: `${CELL_SIZE + random(7)}px`,
+        left: `${CELL_SIZE * x + 1}px`,
+        top: `${CELL_SIZE * y + 1}px`,
+        width: `${CELL_SIZE + random(5)}px`,
+        height: `${CELL_SIZE + random(5)}px`,
         backgroundColor: color
       }}
     />
@@ -157,7 +157,7 @@ class Game extends Component {
   handleRandom = () => {
     for (let y = 0; y < this.rows; y++) {
       for (let x = 0; x < this.cols; x++) {
-        this.board[y][x] = (Math.random() >= 0.5)
+        this.board[y][x] = (Math.random() >= 0.8)
       }
     }
 
