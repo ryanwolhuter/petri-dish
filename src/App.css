@@ -14,15 +14,15 @@
 }
 
 .board {
+  margin-top: 20px;
   position: relative;
-  background-color: #071a52;
-  border-radius: 2%;
+  background-color: #001917;
+  border-radius: 50%;
   overflow: hidden;
   box-shadow: -8px 9px 3px -2px rgba(0,0,0,0.5);
 }
 
 .cell {
-  background: #a7ff83;
   position: absolute;
   border-radius: 20%;
 }
@@ -38,12 +38,12 @@
 .button {
   width: 70px;
   height: 50px;
-  margin: 10px 12px 0 0;
+  margin: 15px 15px 0 15px;
   cursor: pointer;
-  border-radius: 50%;
+  border-radius: 10%;
   border-style: solid;
-  border-color: #071a52;
-  background-color: #071a52;
-  color: #a7ff83;
+  border-color: #001917;
+  background-color: #001917;
+  color: #4F918C;
   box-shadow: -8px 9px 3px -2px rgba(0,0,0,0.5);
 }

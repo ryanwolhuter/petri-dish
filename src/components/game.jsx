@@ -1,8 +1,18 @@
 import React, { Component } from 'react'
 
-const CELL_SIZE = 10
-const WIDTH = 800
-const HEIGHT = 600
+const CELL_SIZE = 15
+const WIDTH = 650
+const HEIGHT = 650
+
+const colors = [
+  '#4F918C',
+  '#2C7772',
+  '#064B46',
+]
+
+function random(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
 
 const Cell = props => {
   const { x, y } = props
@@ -14,7 +24,8 @@ const Cell = props => {
         left: `${CELL_SIZE * x + 1}px`,
         top: `${CELL_SIZE * y + 1}px`,
         width: `${CELL_SIZE - 1}px`,
-        height: `${CELL_SIZE - 1}px`
+        height: `${CELL_SIZE - 1}px`,
+        backgroundColor: colors[random(colors.length)]
       }}
     />
   )
@@ -22,7 +33,7 @@ const Cell = props => {
 
 const Controls = props => {
   const {
-    interval,
+    // interval,
     isRunning,
     runGame,
     stopGame,
@@ -186,12 +197,12 @@ class Game extends Component {
     }
   }
 
-  handleIntervalChange = event => {
-    this.setState({ interval: event.target.value })
-  }
+  // handleIntervalChange = event => {
+  //   this.setState({ interval: event.target.value })
+  // }
 
   render () {
-    const { cells, interval, isRunning } = this.state
+    const { cells, /*interval,*/ isRunning } = this.state
 
     return (
       <div>
@@ -213,11 +224,11 @@ class Game extends Component {
           ))}
         </div>
         <Controls
-          interval={interval}
+          // interval={interval}
           isRunning={isRunning}
           runGame={this.runGame}
           stopGame={this.stopGame}
-          handleIntervalChange={this.handleIntervalChange}
+          // handleIntervalChange={this.handleIntervalChange}
           handleRandom={this.handleRandom}
           handleClear={this.handleClear}
         />
