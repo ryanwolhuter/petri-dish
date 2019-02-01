@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import './game.css'
 
-const CELL_SIZE = 20
+const CELL_SIZE = 10
 const WIDTH = 800
 const HEIGHT = 600
 
@@ -21,6 +20,34 @@ const Cell = props => {
   )
 }
 
+const Controls = props => {
+  const {
+    interval,
+    isRunning,
+    runGame,
+    stopGame,
+    // handleIntervalChange,
+    handleRandom,
+    handleClear
+  } = props
+  return (
+    <div className='controls'>
+      {/*Update every <input*/}
+      {/*value={interval}*/}
+      {/*onChange={handleIntervalChange} /> ms*/}
+      {isRunning
+        ? <button className='button' onClick={stopGame}>
+          Stop
+        </button>
+        : <button className='button' onClick={runGame}>
+          Run
+        </button>
+      }
+      <button className='button' onClick={handleRandom}>Random</button>
+      <button className='button' onClick={handleClear}>Clear</button>
+    </div>
+  )
+}
 
 class Game extends Component {
 
@@ -128,12 +155,7 @@ class Game extends Component {
       for (let x = 0; x < this.cols; x++) {
         let neighbors = this.calculateNeighbors(this.board, x, y)
         if (this.board[y][x]) {
-          if (neighbors === 2 || neighbors === 3) {
-            newBoard[y][x] = true
-          }
-          else {
-            newBoard[y][x] = false
-          }
+          newBoard[y][x] = neighbors === 2 || neighbors === 3;
         }
         else {
           if (!this.board[y][x] && neighbors === 3) {
@@ -146,7 +168,7 @@ class Game extends Component {
     this.board = newBoard
     this.setState({ cells: this.makeCells() })
 
-    this.timeoutHandler = window.setTimeout(() => {
+    this.timeoutHandler = setTimeout(() => {
       this.runIteration()
     }, this.state.interval)
   }
@@ -159,7 +181,7 @@ class Game extends Component {
   stopGame = () => {
     this.setState({ isRunning: false })
     if (this.timeoutHandler) {
-      window.clearTimeout(this.timeoutHandler)
+      clearTimeout(this.timeoutHandler)
       this.timeoutHandler = null
     }
   }
@@ -190,22 +212,15 @@ class Game extends Component {
             />
           ))}
         </div>
-
-        <div className='controls'>
-          Update every <input
-          value={interval}
-          onChange={this.handleIntervalChange} /> ms
-          {isRunning
-            ? <button className='button' onClick={this.stopGame}>
-              Stop
-            </button>
-            : <button className='button' onClick={this.runGame}>
-              Run
-            </button>
-          }
-          <button className='button' onClick={this.handleRandom}>Random</button>
-          <button className='button' onClick={this.handleClear}>Clear</button>
-        </div>
+        <Controls
+          interval={interval}
+          isRunning={isRunning}
+          runGame={this.runGame}
+          stopGame={this.stopGame}
+          handleIntervalChange={this.handleIntervalChange}
+          handleRandom={this.handleRandom}
+          handleClear={this.handleClear}
+        />
       </div>
     )
   }
