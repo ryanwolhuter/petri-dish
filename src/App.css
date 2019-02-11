@@ -4,15 +4,6 @@
   align-items: center;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2em;
-  height: 10vh;
-  color: #071a52;
-}
-
 .board {
   margin-top: 20px;
   position: relative;
@@ -20,42 +11,35 @@
   border-radius: 50%;
   overflow: hidden;
   box-shadow: -8px 9px 3px -2px rgba(0,0,0,0.5);
+  filter:url('#goo');
 }
 
 .cell {
   position: absolute;
-  border-radius: 25% 75% 25% 75% /
-                 75% 25% 75% 25%;
+  border-radius: 25% 45% 35% 50% /
+                 50% 35% 45% 25%;
   background-blend-mode: multiply;
-  animation: wobble 100ms ease-in-out alternate infinite;
+  animation:blob-anim cubic-bezier(0.770, 0.000, 0.175, 1.000) 4s alternate infinite;
 }
 
-@media screen and (max-width: 480px) {
-  .board {
-    margin-top: 0;
-    position: relative;
-    background-color: #001917;
-    border-radius: 0;
-    overflow: hidden;
-    box-shadow: none;
+@keyframes blob-anim{
+  0%{
+    transform:scale(1.1) translate(0,3px);
+    border-radius: 25% 45% 35% 50% /
+                 50% 35% 45% 25%;
   }
-}
-
-@keyframes wobble {
-  25% {
-    border-radius: 50%;
-  }
-
-  50% {
+  33%{
+    transform:scale(1.0) translate(2px, -2px);
     border-radius: 75% 55% 35% 75% /
                    35% 75% 55% 45%;
   }
-
-  75% {
-    border-radius: 50%;
+  66%{
+    transform:scale(1.3) translate(-3px, 1px);
+    border-radius: 25% 45% 35% 50% /
+                 50% 35% 45% 25%;
   }
-
-  100% {
+  94%{
+    transform:scale(1.2) translate(1,-2px);
     border-radius: 75% 25% 75% 25% /
                    25% 75% 25% 75%;
   }

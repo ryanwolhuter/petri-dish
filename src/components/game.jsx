@@ -65,6 +65,7 @@ const Controls = props => {
     handleRandom,
     handleClear
   } = props
+
   return (
     <div className='controls'>
       {isRunning
@@ -85,12 +86,12 @@ class Game extends Component {
 
   state = {
     cells: [],
-    interval: 80,
     isRunning: false
   }
 
   rows = HEIGHT / CELL_SIZE
   cols = WIDTH / CELL_SIZE
+  interval = 80
 
   // Create an empty board.
 
@@ -142,7 +143,12 @@ class Game extends Component {
     const x = Math.floor(offsetX / CELL_SIZE)
     const y = Math.floor(offsetY / CELL_SIZE)
 
-    if (x >= 0 && x <= this.cols && y >= 0 && y <= this.rows) {
+    if (
+      x >= 0 &&
+      x <= this.cols &&
+      y >= 0 &&
+      y <= this.rows
+    ) {
       this.board[y][x] = !this.board[y][x]
     }
 
@@ -166,13 +172,20 @@ class Game extends Component {
 
   calculateNeighbors = (board, x, y) => {
     let neighbors = 0
-    const dirs = [[-1, -1], [-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]]
-    for (let i = 0; i < dirs.length; i++) {
-      const dir = dirs[i]
-      let y1 = y + dir[0]
-      let x1 = x + dir[1]
+    const directions = [[-1, -1], [-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]]
 
-      if (x1 >= 0 && x1 < this.cols && y1 >= 0 && y1 < this.rows && board[y1][x1]) {
+    for (let i = 0; i < directions.length; i++) {
+      const direction = directions[i]
+      let y1 = y + direction[0]
+      let x1 = x + direction[1]
+
+      if (
+        x1 >= 0 &&
+        x1 < this.cols &&
+        y1 >= 0 &&
+        y1 < this.rows &&
+        board[y1][x1]
+      ) {
         neighbors++;
       }
     }
@@ -202,7 +215,7 @@ class Game extends Component {
 
     this.timeoutHandler = setTimeout(() => {
       this.runIteration()
-    }, this.state.interval)
+    }, this.interval)
   }
 
   runGame = () => {
@@ -222,7 +235,7 @@ class Game extends Component {
     const { cells, isRunning } = this.state
 
     return (
-      <div>
+      <>
         <div
           className='board'
           style={{
@@ -240,6 +253,15 @@ class Game extends Component {
               index={index}
             />
           ))}
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <defs>
+              <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+                <feBlend in="SourceGraphic" in2="goo" />
+              </filter>
+            </defs>
+          </svg>
         </div>
         <Controls
           isRunning={isRunning}
@@ -248,7 +270,7 @@ class Game extends Component {
           handleRandom={this.handleRandom}
           handleClear={this.handleClear}
         />
-      </div>
+      </>
     )
   }
 }
