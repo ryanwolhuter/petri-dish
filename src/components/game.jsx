@@ -16,32 +16,19 @@ function random(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
-const Cell = props => {
-  const { x, y, index } = props
+const Cell = ({ x, y, index }) => {
+  let colorIndex = 0
   let color
+  
+  colorIndex = parseInt(index / 10)
 
-  if (index < 10) color = colors[4]
-  if (index > 10 && index < 20) color = colors[3]
-  if (index > 20 && index < 30) color = colors[2]
-  if (index > 30 && index < 40) color = colors[1]
-  if (index > 40 && index < 50) color = colors[0]
-  if (index > 50 && index < 60) color = colors[4]
-  if (index > 60 && index < 70) color = colors[3]
-  if (index > 70 && index < 80) color = colors[2]
-  if (index > 80 && index < 90) color = colors[1]
-  if (index > 90 && index < 100) color = colors[0]
-  if (index > 100 && index < 110) color = colors[4]
-  if (index > 110 && index < 120) color = colors[3]
-  if (index > 120 && index < 130) color = colors[2]
-  if (index > 130 && index < 140) color = colors[1]
-  if (index > 140 && index < 150) color = colors[0]
-  if (index > 150 && index < 160) color = colors[4]
-  if (index > 160 && index < 170) color = colors[3]
-  if (index > 170 && index < 180) color = colors[2]
-  if (index > 180 && index < 190) color = colors[1]
-  if (index > 190 && index < 200) color = colors[0]
-  if (index > 200) color = colors[random(colors.length)]
+  while (colorIndex > 5) {
+    colorIndex = parseInt(colorIndex / 2)
+  }
 
+  colorIndex = colorIndex - 1
+
+  color = colors[colorIndex]
 
   return (
     <div
@@ -57,14 +44,13 @@ const Cell = props => {
   )
 }
 
-const Controls = props => {
-  const {
-    isRunning,
-    runGame,
-    stopGame,
-    handleRandom,
-    handleClear
-  } = props
+const Controls = ({
+  isRunning,
+  runGame,
+  stopGame,
+  handleRandom,
+  handleClear
+}) => {
 
   return (
     <div className='controls'>
