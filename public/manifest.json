@@ -1,6 +1,6 @@
 {
-  "short_name": "Conway's Game of Life",
-  "name": "The Game of Life | Built with React",
+  "short_name": "Petri Dish",
+  "name": "Petri Dish | Based on Conway's Game of Life",
   "icons": [
     {
       "src": "favicon.ico",
