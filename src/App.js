@@ -1,10 +1,10 @@
 import React from 'react'
-import Game from './components/game'
+import PetriDish from './components/PetriDish'
 import './App.css'
 
 const App = () => (
   <div className="App">
-    <Game/>
+    <PetriDish/>
   </div>
 )
 

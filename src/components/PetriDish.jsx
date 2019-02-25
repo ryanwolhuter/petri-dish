@@ -12,14 +12,14 @@ const colors = [
   '#064B46',
 ]
 
-function random(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
+/* Each Cell on the petri dish is rendered as an individual component */
 
 const Cell = ({ x, y, index }) => {
   let colorIndex = 0
   let color
-  
+
+  // Assigning colors according to the index gives the illusion of grouping
+
   colorIndex = parseInt(index / 10)
 
   while (colorIndex > 5) {
@@ -44,10 +44,16 @@ const Cell = ({ x, y, index }) => {
   )
 }
 
+// Evolution is the process of adding a little randomness to life
+
+function random(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
 const Controls = ({
   isRunning,
-  runGame,
-  stopGame,
+  run,
+  pause,
   handleRandom,
   handleClear
 }) => {
@@ -55,10 +61,10 @@ const Controls = ({
   return (
     <div className='controls'>
       {isRunning
-        ? <button className='button' onClick={stopGame}>
-          Stop
+        ? <button className='button' onClick={pause}>
+          Pause
         </button>
-        : <button className='button' onClick={runGame}>
+        : <button className='button' onClick={run}>
           Run
         </button>
       }
@@ -68,7 +74,7 @@ const Controls = ({
   )
 }
 
-class Game extends Component {
+class PetriDish extends Component {
 
   state = {
     cells: [],
@@ -79,30 +85,30 @@ class Game extends Component {
   cols = WIDTH / CELL_SIZE
   interval = 80
 
-  // Create an empty board.
+  // Create an empty dish
 
-  makeEmptyBoard = () => {
-    let board = []
+  makeEmptyDish = () => {
+    let dish = []
 
     for (let y = 0; y < this.rows; y++) {
-      board[y] = []
+      dish[y] = []
       for (let x = 0; x < this.cols; x++) {
-        board[y][x] = false
+        dish[y][x] = false
       }
     }
 
-    return board
+    return dish
   }
 
-  board = this.makeEmptyBoard()
+  dish = this.makeEmptyDish()
 
-  // Create cells from this.board
+  // Create cells from this.dish
 
   makeCells = () => {
     let cells = []
     for (let y = 0; y < this.rows; y++) {
       for (let x = 0; x < this.cols; x++) {
-        if (this.board[y][x]) {
+        if (this.dish[y][x]) {
           cells.push({ x, y })
         }
       }
@@ -112,7 +118,7 @@ class Game extends Component {
   }
 
   getElementOffset = () => {
-    const rect = this.boardRef.getBoundingClientRect()
+    const rect = this.dishRef.getBoundingClientRect()
     const doc = document.documentElement
 
     return {
@@ -135,21 +141,21 @@ class Game extends Component {
       y >= 0 &&
       y <= this.rows
     ) {
-      this.board[y][x] = !this.board[y][x]
+      this.dish[y][x] = !this.dish[y][x]
     }
 
     this.setState({ cells: this.makeCells() })
   }
 
   handleClear = () => {
-    this.board = this.makeEmptyBoard()
+    this.dish = this.makeEmptyDish()
     this.setState({ cells: this.makeCells() })
   }
 
   handleRandom = () => {
     for (let y = 0; y < this.rows; y++) {
       for (let x = 0; x < this.cols; x++) {
-        this.board[y][x] = (Math.random() >= 0.8)
+        this.dish[y][x] = (Math.random() >= 0.8)
       }
     }
 
@@ -180,23 +186,23 @@ class Game extends Component {
   }
 
   runIteration = () => {
-    let newBoard = this.makeEmptyBoard()
+    let newDish = this.makeEmptyDish()
 
     for (let y = 0; y < this.rows; y++) {
       for (let x = 0; x < this.cols; x++) {
-        let neighbors = this.calculateNeighbors(this.board, x, y)
-        if (this.board[y][x]) {
-          newBoard[y][x] = neighbors === 2 || neighbors === 3;
+        let neighbors = this.calculateNeighbors(this.dish, x, y)
+        if (this.dish[y][x]) {
+          newDish[y][x] = neighbors === 2 || neighbors === 3;
         }
         else {
-          if (!this.board[y][x] && neighbors === 3) {
-            newBoard[y][x] = true
+          if (!this.dish[y][x] && neighbors === 3) {
+            newDish[y][x] = true
           }
         }
       }
     }
 
-    this.board = newBoard
+    this.dish = newDish
     this.setState({ cells: this.makeCells() })
 
     this.timeoutHandler = setTimeout(() => {
@@ -204,12 +210,12 @@ class Game extends Component {
     }, this.interval)
   }
 
-  runGame = () => {
+  run = () => {
     this.setState({ isRunning: true })
     this.runIteration()
   }
 
-  stopGame = () => {
+  pause = () => {
     this.setState({ isRunning: false })
     if (this.timeoutHandler) {
       clearTimeout(this.timeoutHandler)
@@ -223,13 +229,13 @@ class Game extends Component {
     return (
       <>
         <div
-          className='board'
+          className='dish'
           style={{
             width: WIDTH,
             height: HEIGHT,
             backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px` }}
           onClick={this.handleClick}
-          ref={n => { this.boardRef = n }}
+          ref={n => { this.dishRef = n }}
         >
           {cells.map((cell, index) => (
             <Cell
@@ -251,8 +257,8 @@ class Game extends Component {
         </div>
         <Controls
           isRunning={isRunning}
-          runGame={this.runGame}
-          stopGame={this.stopGame}
+          run={this.run}
+          pause={this.pause}
           handleRandom={this.handleRandom}
           handleClear={this.handleClear}
         />
@@ -261,4 +267,4 @@ class Game extends Component {
   }
 }
 
-export default Game
+export default PetriDish
